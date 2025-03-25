@@ -2,17 +2,33 @@ import { useState } from "react";
 import InputForm from "../components/InputForm";
 import SlideEditor from "../components/SlideEditor";
 import ConfirmScreen from "../components/ConfirmScreen";
-import { generateStructure, refineStructure, generatePowerPoint } from "../api/presentationApi";
 import PPTSettingScreen from "../components/PPTSettingScreen";
+import {
+  generateStructure,
+  refineStructure,
+  generatePowerPoint,
+} from "../api/presentationApi";
 
-const usersDB = [
+// ユーザー型
+type User = {
+  username: string;
+  password: string;
+};
+
+const usersDB: User[] = [
   { username: "testuser", password: "password123" },
-  { username: "admin", password: "adminpass" }
+  { username: "admin", password: "adminpass" },
 ];
+
 // ログインフォーム
-function LoginForm({ onLogin, switchToRegister }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+type LoginFormProps = {
+  onLogin: () => void;
+  switchToRegister: () => void;
+};
+
+function LoginForm({ onLogin, switchToRegister }: LoginFormProps) {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleLogin = () => {
     const user = usersDB.find(
@@ -51,11 +67,15 @@ function LoginForm({ onLogin, switchToRegister }) {
   );
 }
 
-
 // 新規登録フォーム
-function RegisterForm({ onRegister, switchToLogin }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+type RegisterFormProps = {
+  onRegister: () => void;
+  switchToLogin: () => void;
+};
+
+function RegisterForm({ onRegister, switchToLogin }: RegisterFormProps) {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleRegister = () => {
     if (username && password) {
@@ -91,34 +111,35 @@ function RegisterForm({ onRegister, switchToLogin }) {
   );
 }
 
+// メインコンポーネント
 export default function Home() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isRegistering, setIsRegistering] = useState(false); // 🔸 登録画面切り替え用
-  const [view, setView] = useState("input");
-  const [topic, setTopic] = useState("");
-  const [purpose, setPurpose] = useState("");
-  const [audience, setAudience] = useState("");
-  const [generatedStructure, setGeneratedStructure] = useState(null);
-  const [editedSlides, setEditedSlides] = useState([]);
-  const [customFeedback, setCustomFeedback] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [template, setTemplate] = useState("default");
-  const [language, setLanguage] = useState("ORIGINAL");
-  const [fetchImages, setFetchImages] = useState(true);
-  const [downloadLink, setDownloadLink] = useState("");
-  const [selectedTemplateName, setSelectedTemplateName] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isRegistering, setIsRegistering] = useState<boolean>(false);
+  const [view, setView] = useState<string>("input");
+  const [topic, setTopic] = useState<string>("");
+  const [purpose, setPurpose] = useState<string>("");
+  const [audience, setAudience] = useState<string>("");
+  const [generatedStructure, setGeneratedStructure] = useState<any>(null);
+  const [editedSlides, setEditedSlides] = useState<any[]>([]);
+  const [customFeedback, setCustomFeedback] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [template, setTemplate] = useState<string>("default");
+  const [language, setLanguage] = useState<string>("ORIGINAL");
+  const [fetchImages, setFetchImages] = useState<boolean>(true);
+  const [downloadLink, setDownloadLink] = useState<string>("");
+  const [selectedTemplateName, setSelectedTemplateName] = useState<string>("");
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-lg rounded-xl p-8 max-w-3xl w-full">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">AIプレゼン資料作成</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+          AIプレゼン資料作成
+        </h1>
 
         {!isLoggedIn ? (
           isRegistering ? (
             <RegisterForm
-              onRegister={() => {
-                setIsRegistering(false);
-              }}
+              onRegister={() => setIsRegistering(false)}
               switchToLogin={() => setIsRegistering(false)}
             />
           ) : (
@@ -144,7 +165,6 @@ export default function Home() {
                 loading={loading}
               />
             )}
-
             {view === "edit" && (
               <SlideEditor
                 generatedStructure={generatedStructure}
@@ -160,10 +180,15 @@ export default function Home() {
             )}
             {view === "ppt-setting" && (
               <PPTSettingScreen
-                template={template} setTemplate={setTemplate}
-                language={language} setLanguage={setLanguage}
-                fetchImages={fetchImages} setFetchImages={setFetchImages}
-                handleGeneratePowerPoint={() => generatePowerPoint(editedSlides, template, language, fetchImages)}
+                template={template}
+                setTemplate={setTemplate}
+                language={language}
+                setLanguage={setLanguage}
+                fetchImages={fetchImages}
+                setFetchImages={setFetchImages}
+                handleGeneratePowerPoint={() =>
+                  generatePowerPoint(editedSlides, template, language, fetchImages)
+                }
                 downloadLink={downloadLink}
                 selectedTemplateName={selectedTemplateName}
                 setSelectedTemplateName={setSelectedTemplateName}
@@ -186,7 +211,6 @@ export default function Home() {
                 setSelectedTemplateName={setSelectedTemplateName}
               />
             )}
-
           </>
         )}
       </div>

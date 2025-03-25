@@ -1,16 +1,36 @@
+import React from "react";
 import { refineStructure } from "../api/presentationApi";
 
-export default function SlideEditor({ 
-  generatedStructure, setGeneratedStructure, 
-  editedSlides, setEditedSlides, 
-  customFeedback, setCustomFeedback, 
-  setView, setLoading,
-  loading 
-}) {
-  
-  // スライド構成の編集処理（文字列を直接編集）
-  const handleSlideTextChange = (e) => {
-    setEditedSlides(e.target.value); // 入力されたテキストをそのまま状態に保存
+type SlideEditorProps = {
+  generatedStructure: {
+    topic?: string;
+    purpose?: string;
+    structure?: string;
+  } | null;
+  setGeneratedStructure: (structure: string) => void;
+  editedSlides: string;
+  setEditedSlides: (slides: string) => void;
+  customFeedback: string;
+  setCustomFeedback: (feedback: string) => void;
+  setView: (view: string) => void;
+  setLoading: (loading: boolean) => void;
+  loading: boolean;
+};
+
+export default function SlideEditor({
+  generatedStructure,
+  setGeneratedStructure,
+  editedSlides,
+  setEditedSlides,
+  customFeedback,
+  setCustomFeedback,
+  setView,
+  setLoading,
+  loading,
+}: SlideEditorProps) {
+  // スライド構成の編集処理
+  const handleSlideTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setEditedSlides(e.target.value);
   };
 
   // スライド修正処理
@@ -24,15 +44,8 @@ export default function SlideEditor({
         throw new Error("構造データが返されませんでした。");
       }
 
-      // 修正されたスライド構成を更新
-      if (typeof setGeneratedStructure === "function") {
-        setGeneratedStructure(response.structure);
-      } else {
-        console.error("setGeneratedStructure is not a function");
-      }
-      
+      setGeneratedStructure(response.structure);
       setEditedSlides(response.structure);
-      
     } catch (error) {
       alert("フィードバックの適用に失敗しました。");
       console.error("フィードバック適用エラー:", error);
@@ -48,15 +61,13 @@ export default function SlideEditor({
         <strong>テーマ:</strong> {generatedStructure?.topic} | <strong>目的:</strong> {generatedStructure?.purpose}
       </p>
 
-      {/* スライド構成の編集（テキストエリア） */}
       <textarea
         className="w-full p-3 border rounded-lg mt-2 focus:ring-2 focus:ring-gray-400"
         value={editedSlides}
-        onChange={handleSlideTextChange} // 文字列として扱う
+        onChange={handleSlideTextChange}
         rows={8}
       />
 
-      {/* 修正フィードバック入力 */}
       <input
         className="w-full p-3 border rounded-lg mt-2"
         placeholder="プロンプト経由でスライド構成修正の必要があればフィードバックを入力し、スライド修正ボタンをクリック"
@@ -64,22 +75,20 @@ export default function SlideEditor({
         onChange={(e) => setCustomFeedback(e.target.value)}
       />
 
-      {/* スライド修正ボタン */}
-      <button 
-        className="bg-green-600 text-white px-6 py-3 rounded-lg mt-2" 
+      <button
+        className="bg-green-600 text-white px-6 py-3 rounded-lg mt-2"
         onClick={handleRefineStructure}
         disabled={loading}
       >
         {loading ? "スライド修正中..." : "スライド修正"}
       </button>
 
-      {/* 詳細確認ボタン */}
       <button
         className="bg-gray-500 text-white px-6 py-3 rounded-lg mt-2 ml-4"
         onClick={() => setView("ppt-setting")}
         disabled={loading}
       >
-        {loading ? "読み込み中..." : "スライド構成を決定"}        
+        {loading ? "読み込み中..." : "スライド構成を決定"}
       </button>
     </>
   );

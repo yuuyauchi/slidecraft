@@ -1,13 +1,34 @@
 import { generateStructure } from "../api/presentationApi";
+import React from "react";
+
+// Props の型定義
+type InputFormProps = {
+  topic: string;
+  setTopic: (value: string) => void;
+  purpose: string;
+  setPurpose: (value: string) => void;
+  audience: string;
+  setAudience: (value: string) => void;
+  setView: (view: string) => void;
+  setGeneratedStructure: (structure: any) => void;
+  setEditedSlides: (slides: any[]) => void;
+  setLoading: (loading: boolean) => void;
+  loading: boolean;
+};
 
 export default function InputForm({
-  topic, setTopic,
-  purpose, setPurpose,
-  audience, setAudience,
-  setView, setGeneratedStructure,
-  setEditedSlides, setLoading,
-  loading
-}) {
+  topic,
+  setTopic,
+  purpose,
+  setPurpose,
+  audience,
+  setAudience,
+  setView,
+  setGeneratedStructure,
+  setEditedSlides,
+  setLoading,
+  loading,
+}: InputFormProps) {
   const handleGenerateStructure = async () => {
     setLoading(true);
     try {
