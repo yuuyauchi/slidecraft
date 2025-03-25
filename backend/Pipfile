@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+pandas = "*"
+langchain = "*"
+langchain-community = "*"
+openai = "*"
+langchain-openai = "*"
+requests = "*"
+faiss-cpu = "*"
+tiktoken = "*"
+uvicorn = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"
