@@ -7,7 +7,7 @@ from langchain_core.output_parsers import StrOutputParser, JsonOutputParser
 from pydantic import BaseModel
 import json
 from fastapi.middleware.cors import CORSMiddleware
-from powerpoint_generator import slidespeak_api_call  # Import 変更
+from powerpoint_routes import slidespeak_api_call  # Import 変更
 from dotenv import load_dotenv
 
 load_dotenv()
