@@ -1,18 +1,23 @@
 import { useState } from "react";
 
-export default function Register() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+export default function Register(): JSX.Element {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
-  const handleRegister = async () => {
-    const response = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+  const handleRegister = async (): Promise<void> => {
+    try {
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
 
-    const data = await response.json();
-    alert(data.message);
+      const data: { message: string } = await response.json();
+      alert(data.message);
+    } catch (error) {
+      alert("登録中にエラーが発生しました");
+      console.error("Registration error:", error);
+    }
   };
 
   return (
