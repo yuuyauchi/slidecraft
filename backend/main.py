@@ -16,7 +16,6 @@ app.add_middleware(
 )
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-print(current_dir)
 static_path = os.path.join(current_dir, "images") 
 app.mount("/images", StaticFiles(directory=static_path), name="images")
 
