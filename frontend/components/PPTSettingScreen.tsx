@@ -47,13 +47,13 @@ export default function PPTSettingScreen({
                 className="absolute inset-0 z-10 object-cover transition-opacity duration-300 hover:opacity-0"
                 alt={`theme preview cover for ${name}`}
                 draggable={false}
-                src={`https://app.slidespeak.co/images/themes/${name}-cover.jpg`}
+                src={`http://localhost:8000/images/${name}-cover.jpg`}
               />
               <img
                 className="absolute inset-0 object-cover"
                 alt={`theme preview content for ${name}`}
                 draggable={false}
-                src={`https://app.slidespeak.co/images/themes/${name}-content.jpg`}
+                src={`http://localhost:8000/images/${name}-content.jpg`}
               />
             </div>
           </div>
